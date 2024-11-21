@@ -33,9 +33,9 @@ let package = Package(
         .target(
             name: "CloudyKit",
             dependencies: [
-                "Cryptor",
-                "CryptorECC",
-                "OpenCombine",
+                .product(name: "Cryptor", package: "bluecryptor"),
+                .product(name: "CryptorECC", package: "blueecc"),
+                .product(name: "OpenCombine", package: "OpenCombine"),
                 .product(name: "OpenCombineFoundation", package: "OpenCombine"),
             ]),
         .testTarget(
