@@ -11,7 +11,7 @@ import CloudyKit
 final class StringTests: XCTestCase {
     
     func testSeparationWhenOneOccurrence() {
-        var segments = "name IN {'Camden', 'Diego'}"
+        let segments = "name IN {'Camden', 'Diego'}"
             .components(separatedByFirst: "IN")
 
         XCTAssertEqual(segments.count, 2)
@@ -20,7 +20,7 @@ final class StringTests: XCTestCase {
     }
 
     func testSeparationWhenMultipleOccurrences() {
-        var segments = "app IN {'INSTAGRAM'}"
+        let segments = "app IN {'INSTAGRAM'}"
             .components(separatedByFirst: "IN")
 
         XCTAssertEqual(segments.count, 2)
@@ -29,14 +29,14 @@ final class StringTests: XCTestCase {
     }
 
     func testSeparationWhenNoOccurrences() {
-        var segments = "something == foo"
+        let segments = "something == foo"
             .components(separatedByFirst: "IN")
 
         XCTAssertEqual(segments.count, 1)
         XCTAssertEqual(segments[0], "something == foo")
     }
 
-    static var allTests = [
+    static let allTests = [
         ("testSeparationWhenOneOccurrence", testSeparationWhenOneOccurrence),
         ("testSeparationWhenMultipleOccurrences", testSeparationWhenMultipleOccurrences),
         ("testSeparationWhenNoOccurrences", testSeparationWhenNoOccurrences)

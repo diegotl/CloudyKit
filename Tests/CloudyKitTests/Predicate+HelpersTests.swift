@@ -138,7 +138,7 @@ final class PredicatePlusHelpersTests: XCTestCase {
         XCTAssertEqual([], try truePredicate.filterBy())
     }
     
-    static var allTests = [
+    static let allTests = [
         ("testFieldContainsSpecificValue", testFieldContainsSpecificValue),
         ("testMatchFieldToSpecificValue", testMatchFieldToSpecificValue),
         ("testMatchFieldToOneOrMoreValues", testMatchFieldToOneOrMoreValues),
