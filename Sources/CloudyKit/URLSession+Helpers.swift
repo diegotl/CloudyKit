@@ -19,7 +19,7 @@ enum NetworkSessionError: Error {
 }
 
 internal protocol NetworkSession {
-    func internalDataTask(with request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> NetworkSessionDataTask
+    func internalDataTask(with request: URLRequest, completionHandler: @escaping @Sendable (Data?, URLResponse?, Error?) -> Void) -> NetworkSessionDataTask
     func internalDataTaskPublisher(for request: URLRequest) -> AnyPublisher<(data: Data, response: URLResponse), Error>
 }
 
@@ -28,7 +28,7 @@ internal protocol NetworkSessionDataTask {
 }
 
 extension URLSession: NetworkSession {
-    func internalDataTask(with request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> NetworkSessionDataTask {
+    func internalDataTask(with request: URLRequest, completionHandler: @escaping @Sendable (Data?, URLResponse?, Error?) -> Void) -> NetworkSessionDataTask {
         return self.dataTask(with: request, completionHandler: completionHandler)
     }
     
@@ -109,7 +109,7 @@ extension NetworkSession {
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue(CloudyKitConfig.serverKeyID, forHTTPHeaderField: "X-Apple-CloudKit-Request-KeyID")
-        request.addValue(CloudyKitConfig.dateFormatter.string(from: now), forHTTPHeaderField: "X-Apple-CloudKit-Request-ISO8601Date")
+        request.addValue(CloudyKitConfig.iso8601DateString(from: now), forHTTPHeaderField: "X-Apple-CloudKit-Request-ISO8601Date")
         
         var fields: [String:CKWSRecordFieldValue] = [:]
         for (fieldName, value) in record.fields {
@@ -182,7 +182,7 @@ extension NetworkSession {
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue(CloudyKitConfig.serverKeyID, forHTTPHeaderField: "X-Apple-CloudKit-Request-KeyID")
-        request.addValue(CloudyKitConfig.dateFormatter.string(from: now), forHTTPHeaderField: "X-Apple-CloudKit-Request-ISO8601Date")
+        request.addValue(CloudyKitConfig.iso8601DateString(from: now), forHTTPHeaderField: "X-Apple-CloudKit-Request-ISO8601Date")
         let records = [
             CKWSLookupRecordDictionary(recordName: recordID.recordName)
         ]
@@ -205,7 +205,7 @@ extension NetworkSession {
             request.httpMethod = "POST"
             request.addValue("application/json", forHTTPHeaderField: "Content-Type")
             request.addValue(CloudyKitConfig.serverKeyID, forHTTPHeaderField: "X-Apple-CloudKit-Request-KeyID")
-            request.addValue(CloudyKitConfig.dateFormatter.string(from: now), forHTTPHeaderField: "X-Apple-CloudKit-Request-ISO8601Date")
+            request.addValue(CloudyKitConfig.iso8601DateString(from: now), forHTTPHeaderField: "X-Apple-CloudKit-Request-ISO8601Date")
             var zoneIDDict: CKWSZoneIDDictionary? = nil
             if let zoneID = zoneID {
                 zoneIDDict = CKWSZoneIDDictionary(zoneName: zoneID.zoneName, ownerName: zoneID.ownerName)
@@ -235,7 +235,7 @@ extension NetworkSession {
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue(CloudyKitConfig.serverKeyID, forHTTPHeaderField: "X-Apple-CloudKit-Request-KeyID")
-        request.addValue(CloudyKitConfig.dateFormatter.string(from: now), forHTTPHeaderField: "X-Apple-CloudKit-Request-ISO8601Date")
+        request.addValue(CloudyKitConfig.iso8601DateString(from: now), forHTTPHeaderField: "X-Apple-CloudKit-Request-ISO8601Date")
         let recordDictionary = CKWSRecordDictionary(recordName: recordID.recordName,
                                                     recordType: nil,
                                                     recordChangeTag: nil,
@@ -267,7 +267,7 @@ extension NetworkSession {
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue(CloudyKitConfig.serverKeyID, forHTTPHeaderField: "X-Apple-CloudKit-Request-KeyID")
-        request.addValue(CloudyKitConfig.dateFormatter.string(from: now), forHTTPHeaderField: "X-Apple-CloudKit-Request-ISO8601Date")
+        request.addValue(CloudyKitConfig.iso8601DateString(from: now), forHTTPHeaderField: "X-Apple-CloudKit-Request-ISO8601Date")
         if let data = try? CloudyKitConfig.encoder.encode(tokenRequest), let privateKey = CloudyKitConfig.serverPrivateKey {
             let signature = CKRequestSignature(data: data, date: now, path: path, privateKey: privateKey)
             if let signatureValue = try? signature.sign() {

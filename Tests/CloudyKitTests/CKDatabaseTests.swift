@@ -785,7 +785,7 @@ final class CKDatabaseTests: XCTestCase {
         self.wait(for: [expectation], timeout: 1)
     }
 
-    static var allTests = [
+    static let allTests = [
         ("testSaveNewRecord", testSaveNewRecord),
         ("testFetchRecord", testFetchRecord),
         ("testQueryRecords", testQueryRecords),
